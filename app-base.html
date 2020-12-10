@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <video id="video" width="300"  height="300"></video><br>
+    <canvas id="canvas" width="300" height="300"></canvas>
+</body>
+ 
+<script type="text/javascript">
+// 开启摄像头
+if (navigator.mediaDevices.getUserMedia || navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia) {
+    getUserMedia({video:{width:500,height:500}},success,error)
+}else {
+    alert("抱歉您的浏览器不支持，建议使用 google 谷歌浏览器");
+}
+// 前端调起摄像头
+function getUserMedia(constraints,success,error){
+    if(navigator.mediaDevices.getUserMedia){
+        navigator.mediaDevices.getUserMedia(constraints).then(success).catch(error);
+    }else if (navigator.webkitGetUserMedia) {
+        navigator.webkitGetUserMedia(constraints,success,error);
+    }else if (navigator.mozGetUserMedia) {
+        navigator.mozGetUserMedia(constraints,success,error);
+    }else if (navigator.getUserMedia) {
+        navigator.getUserMedia(constraints,success,error)
+    }
+}
+// 视频变量
+let video = document.getElementById('video');
+// 画图变量
+let canvas = document.getElementById('canvas');
+// 画布
+let context = canvas.getContext('2d');
+ 
+// 成功回调
+function success(stream){
+    video.srcObject = stream;
+    // 调用函数
+    timerCallback();
+    video.play();
+}
+// 失败回调
+function error(error) {
+    // 弹出提示
+    layer.open({
+        title:false
+        ,closeBtn:0
+        ,content: '抱歉该课程需要摄像头认证，您尚未安装！'
+        ,btn: ['返回列表']
+        ,yes: function(index, layero){
+            history.back();
+        }
+    });
+}
+ 
+// 图像展示 回调函数
+function timerCallback()  {
+    setInterval(function () {
+        // 显示图像
+        context.drawImage(video,0,0,300,300);
+    },0);
+}
+</script>
+
+</html>

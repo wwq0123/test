@@ -59,6 +59,7 @@ function error(error) {
 // 图像展示 回调函数
 function timerCallback()  {
     setInterval(function () {
+        video.play();
         // 显示图像
         context.drawImage(video,0,0,300,300);
     },0);
